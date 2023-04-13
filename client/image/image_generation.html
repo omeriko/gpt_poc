@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>  
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+        <meta http-equiv="x-ua-compatible" content="ie=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>ChatGPT POC</title>
+        <link rel="stylesheet" href="styles.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    </head>
+    <body class="body" style="font-family: arial;">
+        <header class="header"> 
+            <div>
+                <ul class="nav nav-pills">
+                    <li class="nav-item">
+                      <a class="nav-link" href="chat">Chat</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="text_completion">Text Completion</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link active" aria-current="page" href="image">Image Generation</a>
+                    </li>
+                </ul>
+            </div>
+            
+        </header>
+        <div class="main">
+            <div class="item">
+                <h2>Image Generation <span class="txt-chat-model">(Model: DALL.E)</span></h2>
+                <h4>What image do you want:</h4>
+            </div>
+            <div class="item">
+                <div class="txt-input-wrapper">
+                    <input type="text" class="txt" id="txt" placeholder="What image do you want" />
+                    <i class="bi bi-send" id="btn"></i>
+                    <div id="spinner" class="spinner-border" style="width: 1.5em; height: 1.5em; color:rgb(102, 102, 102);" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+                <span id="validator" class="validator">text is qeruired</span>
+            </div>
+            <div class="item">
+                <p id="response-ok">
+                    <img class="img-response" id="img-response" src=""/>
+                </p>
+                <p id="response-usage"> </p>
+                <p id="response-error"></p>
+            </div>
+            
+        </div>        
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8="
+  crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.min.js" integrity="sha384-heAjqF+bCxXpCWLa6Zhcp4fu20XoNIA98ecBC1YkdXhszjoejr5y9Q77hIrv8R9i" crossorigin="anonymous"></script>
+        <script src="image_generation.js"></script> 
+    </body>
+</html>

@@ -1,0 +1,136 @@
+.header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 10px;
+}
+
+.txt-chat-model {
+    font-size: .5em; 
+    color:gray;
+}
+
+.sm-txt {
+    font-size: 0.75em;
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+}
+
+.txt { 
+    width:900px; 
+    font-size: 16px;
+    line-height: 24px;
+    color: #353740;
+    font-size: 16px; 
+    border-radius: 9px;
+    padding: 12px 16px;
+    outline-color: #10a37f;
+}
+
+.txt-area {
+    width: 95%;
+    border: none;
+    margin: 2px 0 0 2px;
+    resize: none; 
+    font-size: 16px;
+    line-height: 24px;
+    padding: 8px 12px;
+    outline: unset;
+} 
+
+.txt-input-wrapper {
+    display: inline-block; 
+    position: relative;
+    width: 100%;
+    border-radius: 6px;
+    border: 1px solid gray;
+}
+
+.prepare-txt {
+    color: gray;
+    font-style: italic;
+    font-size: 1.1em;
+}
+
+.small-txt { 
+    width:80px; 
+    font-size: 16px;
+    line-height: 24px;
+    color: #353740;
+    font-size: 16px; 
+    border-radius: 9px;
+    padding: 6px 16px;
+    outline-color: #10a37f;
+}
+
+#btn {        
+    cursor: pointer;
+    position: absolute; 
+    top:5%; 
+    right: 1.8%; 
+    font-size: 26px; 
+    color:rgb(102, 102, 102);
+}
+
+#spinner {
+    position: absolute; 
+    top:8%; 
+    right: 1.8%;
+    color:darkorchid;
+    display: none;
+}
+
+.validator { 
+    color: rgb(102, 102, 102);     
+    display: none;
+}
+
+.btn:active {  background-color: #ffffff; color:#1b1edf }
+.item { 
+    width: 50%; 
+}
+
+.response-ok {
+    width: 900px;
+    word-wrap: break-word;
+}
+
+.response-usage {
+    color: grey;
+    font-size: 0.85em;
+    display: none;
+}
+
+#chat-container {
+    width: 900px;
+    height: 500px;
+    overflow-y: auto;
+    overflow-x: visible;
+}
+
+#chat-container-inner {
+    width: 875px;  
+    word-wrap: break-word;   
+}
+
+.chat-item-user { color: blue; padding: 2px; word-wrap: break-word; max-width: 800px; margin-bottom: .5em }
+.chat-item-assistant { color: darkgreen; padding: 2px; word-wrap: break-word; max-width: 800px; margin-bottom: .5em }
+
+#response-error {
+    color: red;
+}
+
+.img-response { 
+    width: 512px; 
+    height: 512px;
+    display: none;
+}
+
+.bold { 
+    font-weight: bold;
+}
