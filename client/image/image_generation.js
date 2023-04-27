@@ -1,5 +1,5 @@
 window.addEventListener('DOMContentLoaded', () => {
-    const domain = "192.168.217.100"; //"192.168.1.20";
+    const domain = "localhost"; //"192.168.1.20";
     let btn = document.querySelector("#btn");
     let txt = document.querySelector("#txt");
     
@@ -10,18 +10,21 @@ window.addEventListener('DOMContentLoaded', () => {
     let response_usage = document.querySelector("#response-usage");
     let img_response = document.querySelector("#img-response");
 
-    $.ajax({
-        url: `http://${domain}:8000/ping`, 
-        method: 'GET', 
-        timeout: 0 
-    }).done((data, textStatus, jqXHR) => {
-        if(jqXHR.status === 200) {
-            console.log(data);
-        }
-    }).fail( (jqXHR, textStatus, errorThrown) => {                               
-        
-    });
+    const headerElement = document.querySelector("header");
+    
+    const fetchHeader = async () => {
+        try {
+            const res = await fetch("header");
+            const template = await res.text();
 
+            headerElement.innerHTML = template;
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    fetchHeader();
+    
     const validate_input = function() {        
         let txt_input = txt.value.trim();
         validator.style.display = "none";

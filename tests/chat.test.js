@@ -92,8 +92,8 @@ describe("Test Behavior when sending a prompt to the server", () => {
   
   test("The server response appears in the chat history", async () => {    
     await page.waitForSelector(".chat-item-assistant", { visible: true });
-    const assistant_answer = await page.$eval('.chat-item-assistant', el => el.innerText);    
-    expect(assistant_answer).toEqual("Assistant:WW2 in color, The Handmaid's Tale");
+    const assistant_answer = await page.$eval('.chat-item-assistant > .response-txt', el => el.innerText);    
+    expect(assistant_answer).toEqual("GPT-3.5 answer: WW2 in color, The Handmaid's Tale");
   });
 
   test("The token usage section is visible", async () => {

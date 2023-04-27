@@ -1,11 +1,12 @@
 const puppeteer = require('puppeteer');
 
 jest.setTimeout(30000);
+console.log(process.env.NODE_ENV);
 
 class CustomPage {  
   
   static async build() {   
-    const browser_options = process.env.NODE_ENV === "dev" ? { 
+    const browser_options = process.env.NODE_ENV !== "ci" ? { 
       slowMo: 200,
       headless: false
     } : { 

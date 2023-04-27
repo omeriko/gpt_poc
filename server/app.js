@@ -8,6 +8,7 @@ const path = require("path");
 const fsPromises = require("fs/promises");
 const keys = require("./config/keys");
 
+console.log(process.env.NODE_ENV);
 const configuration = new Configuration({
     apiKey: keys.OPEN_AI_TOKEN
   });
@@ -35,11 +36,19 @@ app.use('/styles.css', express.static(path.join(__dirname, '../', 'client', 'sty
 app.use('/chat', express.static(path.join(__dirname, '../', 'client', 'chat', 'chat.html' )));
 app.use('/chat.js', express.static(path.join(__dirname, '../', 'client', 'chat', 'chat.js' )));
 
+app.use('/chat_next', express.static(path.join(__dirname, '../', 'client', 'chat_next', 'chat.html' )));
+app.use('/chat_next.js', express.static(path.join(__dirname, '../', 'client', 'chat_next', 'chat.js' )));
+
+app.use('/chat_next_mood', express.static(path.join(__dirname, '../', 'client', 'chat_next_mood', 'chat.html' )));
+app.use('/chat_next_mood.js', express.static(path.join(__dirname, '../', 'client', 'chat_next_mood', 'chat.js' )));
+
 app.use('/text_completion', express.static(path.join(__dirname, '../', 'client', 'text_completion', 'text_completion.html' )));
 app.use('/text_completion.js', express.static(path.join(__dirname, '../', 'client', 'text_completion', 'text_completion.js' )));
 
 app.use('/image', express.static(path.join(__dirname, '../', 'client', 'image', 'image_generation.html' )));
 app.use('/image_generation.js', express.static(path.join(__dirname, '../', 'client', 'image', 'image_generation.js' )));
+
+app.use('/header', express.static(path.join(__dirname, '../', 'client', 'header.txt' )));
 
 app.get('/ping', [cors(corsOptionsDelegate)], (req, res) => {
     const text = "ok-poc";      
@@ -124,21 +133,24 @@ app.post('/post_chat_completion', [cors(corsOptionsDelegate)], async (req, res) 
     const temperature = Number(req.body.temperature);
     const chat_history = [...req.body.chat_history];
     //const __dirname = path.dirname(fileURLToPath(import.meta.url));
-    const filename = 'series_smaller.txt';
-    const full_path_txt = path.join(__dirname, '../', filename);
+    const full_path_txt = path.join(__dirname, '../', 'series_smaller2.txt');
     let json_res = {};
     try {
         if(process.env.NODE_ENV !== "ci") {
             const all_series = await fsPromises.readFile(full_path_txt, "utf8");
             chat_history[1].content += " " + all_series;
-
+            chat_history[1].content = chat_history[1].content.replaceAll("\n", "");
+            const hrstart = process.hrtime();
             const completion = await openai.createChatCompletion({
                 model: "gpt-3.5-turbo",
                 temperature: temperature,
                 messages: req.body.chat_history
             });
             
-            json_res = make_response2(completion.data);
+            const hrend = process.hrtime(hrstart);
+            const processing = format_processing_time(hrend); 
+            json_res = make_response2(completion.data, processing);
+
             res.status(200).json(json_res);
         } else {
             setTimeout(() => { 
@@ -157,13 +169,14 @@ app.post('/post_chat_completion', [cors(corsOptionsDelegate)], async (req, res) 
         }
     }
 
-    function make_response2 (payload) {
+    function make_response2 (payload, processing) {
         return {
             finish_reason: payload.choices[0].finish_reason,
             text:  payload.choices[0].message.content,
             usage: payload.usage,
-            env: "prod/dev"
-        }
+            env: "prod/dev",
+            duration: processing
+        };
     }
 
     function make_fake_response () {
@@ -171,8 +184,116 @@ app.post('/post_chat_completion', [cors(corsOptionsDelegate)], async (req, res) 
             finish_reason: "stop",
             text:  "WW2 in color, The Handmaid's Tale",
             usage: { prompt_tokens: 100, completion_tokens: 15, total_tokens: 115 },
-            env: "ci"
+            env: "ci",
+            duration: "0.1 Seconds"
+        };
+    }
+
+    function format_processing_time(hrend){
+        const measurement = "Seconds";
+        let secs = hrend[0];
+        let remainder_milli_secs = Math.floor(hrend[1]/1000000);
+        let result = Number(`${secs}.${remainder_milli_secs}`);
+        return `${result} ${measurement}`;
+    }
+   
+});
+
+app.post('/post_chat_completion_next', [cors(corsOptionsDelegate)], async (req, res) => {
+    let json_res = {};
+    const temperature = Number(req.body.temperature);
+    const few_series = join_array_with_comma(req.body.few_user_series);
+    const few_moods = join_array_with_comma(req.body.user_moods);
+    
+    const chat_history = [{ 
+            "role": "system", 
+            "content": "You are a helpful assistant that specializes in recommending TV series to viewers."
+        }, 
+        { 
+            "role": "user", 
+            "content": `I've seen and enjoyed the following TV series: ${few_series}. Currently i'm feeling: ${few_moods}.
+            1. Please recommend me two OTHER tv series that I might also like AND might suit my mood.
+            2. For each series recommendation do not specify the series plot.
+            3. For each series recommendation explain its reason.
+            4. Recommend series ONLY from the following list: `
         }
+    ];
+
+    chat_history[1].content = chat_history[1].content.replaceAll("\n", "");
+
+    try {
+        if(process.env.NODE_ENV !== "ci") {
+            const full_path_txt = path.join(__dirname, '../', 'series_smaller2.txt');
+            const all_series = await fsPromises.readFile(full_path_txt, "utf8");
+            
+            chat_history[1].content += " " + all_series;
+            const hrstart = process.hrtime();
+            
+            const completion = await openai.createChatCompletion({
+                model: "gpt-3.5-turbo",
+                temperature: temperature,
+                messages: chat_history
+            });
+            
+            const hrend = process.hrtime(hrstart);
+            const processing = format_processing_time(hrend); 
+            json_res = make_response2(completion.data, processing);
+
+            res.status(200).json(json_res);
+        } else {
+            setTimeout(() => { 
+                json_res = make_fake_response();
+                res.status(200).json(json_res);
+            }, 2000);
+        }
+    } catch(err) {
+            // Consider adjusting the error handling logic for your use case
+        if (err.response) {
+            console.error(err.response.status, err.response.data);
+            res.status(err.response.status).json(err.response.data);
+        } else {
+            console.error(`Error with OpenAI API request: ${err.message}`);
+            res.status(500).json({ error: { message: 'An error occurred during your request.', }});
+        }
+    }
+
+    function make_response2 (payload, processing) {
+        return {
+            finish_reason: payload.choices[0].finish_reason,
+            text:  payload.choices[0].message.content,
+            usage: payload.usage,
+            env: "prod/dev",
+            duration: processing
+        };
+    }
+
+    function make_fake_response () {
+        return {
+            finish_reason: "stop",
+            text:  "WW2 in color, The Handmaid's Tale",
+            usage: { prompt_tokens: 100, completion_tokens: 15, total_tokens: 115 },
+            env: "ci",
+            duration: "0.1 Seconds"
+        };
+    }
+
+    function format_processing_time(hrend){
+        const measurement = "Seconds";
+        let secs = hrend[0];
+        let remainder_milli_secs = Math.floor(hrend[1]/1000000);
+        let result = Number(`${secs}.${remainder_milli_secs}`);
+        return `${result} ${measurement}`;
+    }
+
+    function join_array_with_comma(array) {
+        let result = "";
+        array.forEach((item, index, arr) => {
+            if(index === 0) result += item;
+            else if(index === arr.length-1) result += ` and ${item}`;
+            else result += `, ${item}`;
+        });
+
+        return result;
     }
    
 });

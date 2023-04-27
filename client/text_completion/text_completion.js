@@ -1,5 +1,5 @@
 window.addEventListener('DOMContentLoaded', () => {
-    const domain = "192.168.217.100"; //"192.168.1.20";
+    const domain = "localhost"; //"192.168.1.20";
     let btn = document.querySelector("#btn");
     let txt = document.querySelector("#txt");
     let temperature = document.querySelector("#temperature");
@@ -9,18 +9,6 @@ window.addEventListener('DOMContentLoaded', () => {
     let response = document.querySelector("#response-ok");
     let response_error = document.querySelector("#response-error");
     let response_usage = document.querySelector("#response-usage");
-
-    $.ajax({
-        url: `http://${domain}:8000/ping`, 
-        method: 'GET', 
-        timeout: 0 
-    }).done((data, textStatus, jqXHR) => {
-        if(jqXHR.status === 200) {
-            console.log(data);
-        }
-    }).fail( (jqXHR, textStatus, errorThrown) => {                               
-        
-    });
 
     const validate_input = function() {        
         let txt_input = txt.value.trim();

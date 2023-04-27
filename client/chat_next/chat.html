@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>  
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+        <meta http-equiv="x-ua-compatible" content="ie=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>ChatGPT POC</title>
+        <link rel="stylesheet" href="styles.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.4/font/bootstrap-icons.css">
+        <style>
+            .item { width: 72% }
+        </style>
+    </head>
+    <body class="body" style="font-family: arial;">
+        <header class="header"> 
+            
+        </header>
+        <div class="main">
+            <div class="item" style="display: flex; justify-content: space-between; margin-bottom: 2em; margin-top: 1.5em;">
+                <h2>                    
+                    gpt-3.5-turbo
+                </h2> 
+                <div style="display: none;">
+                    Temperature: 
+                    <input type="number" min="0" max="2" step="0.2" class="small-txt" id="temperature" value="0.2" />
+                </div>
+            </div>
+
+            <div class="item" style="font-size: .85em">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                    <label class="form-check-label" for="inlineCheckbox1">True Detective</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
+                    <label class="form-check-label" for="inlineCheckbox2">The Sopranos</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3">
+                    <label class="form-check-label" for="inlineCheckbox3">Gomorrah</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="inlineCheckbox4" value="option3">
+                    <label class="form-check-label" for="inlineCheckbox4">My Better Half</label>
+                  </div>
+
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="inlineCheckbox5" value="option3">
+                    <label class="form-check-label" for="inlineCheckbox5">The Big Bang Theory</label>
+                  </div>
+                  
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="inlineCheckbox6" value="option3">
+                    <label class="form-check-label" for="inlineCheckbox6">The Battle of Alcatraz</label>
+                  </div>
+
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="inlineCheckbox7" value="option3">
+                    <label class="form-check-label" for="inlineCheckbox7">Locked</label>
+                  </div>
+                  
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="inlineCheckbox8" value="option3">
+                    <label class="form-check-label" for="inlineCheckbox8">The Gilded Age</label>
+                  </div>
+                  
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="inlineCheckbox9" value="option3">
+                    <label class="form-check-label" for="inlineCheckbox9">Better Call Saul</label>
+                  </div>
+                  
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="inlineCheckbox10" value="option3">
+                    <label class="form-check-label" for="inlineCheckbox10">S.W.A.T</label>
+                  </div>
+                  
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="inlineCheckbox11" value="option3">
+                    <label class="form-check-label" for="inlineCheckbox11">Connected</label>
+                  </div>
+                  
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="inlineCheckbox12" value="option3">
+                    <label class="form-check-label" for="inlineCheckbox12">Frida Kahlo</label>
+                  </div>
+                  
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="inlineCheckbox13" value="option3">
+                    <label class="form-check-label" for="inlineCheckbox13">The Great Australian Bake Off</label>
+                  </div>
+
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="inlineCheckbox14" value="option3">
+                    <label class="form-check-label" for="inlineCheckbox14">The Hills: New Beginnings</label>
+                  </div>
+                  
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="inlineCheckbox15" value="option3">
+                    <label class="form-check-label" for="inlineCheckbox15">Starstruck</label>
+                  </div>
+
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="inlineCheckbox16" value="option3">
+                    <label class="form-check-label" for="inlineCheckbox16">Gulperi</label>
+                  </div>
+
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="inlineCheckbox17" value="option3">
+                    <label class="form-check-label" for="inlineCheckbox17">Gossip Girl</label>
+                  </div>
+
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="inlineCheckbox18" value="option3">
+                    <label class="form-check-label" for="inlineCheckbox18">Veep</label>
+                  </div>
+
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="inlineCheckbox19" value="option3">
+                    <label class="form-check-label" for="inlineCheckbox19">Law & Order</label>
+                  </div>
+                                    
+                  
+            </div>
+
+            <div class="item" style="margin-top: 2em; margin-top: 2em; display: flex; align-items: center;">
+                <button type="button" id="btn-next" class="btn btn-success" style="padding: 0.375em 2.4em">Send</button>
+                <div id="spinner-next" class="spinner-border" style="" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <div id="validator" class="validator" style="margin-left: 1em;">Choose at least 3 series</div>
+            </div>
+            <div class="item">                
+                <p id="response-usage" class="response-usage"></p>
+                <p id="response-error"></p>
+                <div id="chat-container">
+                    <div id="chat-container-inner"></div>                    
+                </div>
+            </div>
+        </div>
+        
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8="
+  crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.min.js" integrity="sha384-heAjqF+bCxXpCWLa6Zhcp4fu20XoNIA98ecBC1YkdXhszjoejr5y9Q77hIrv8R9i" crossorigin="anonymous"></script>
+        <script src="chat_next.js"></script> 
+    </body>
+</html>

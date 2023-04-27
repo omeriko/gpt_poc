@@ -7,68 +7,48 @@
         <title>ChatGPT POC</title>
         <link rel="stylesheet" href="styles.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.4/font/bootstrap-icons.css">
     </head>
     <body class="body" style="font-family: arial;">
         <header class="header"> 
-            <div>                
-                <ul class="nav nav-pills">
-                    <li class="nav-item">
-                      <a class="nav-link active" aria-current="page" href="chat">Chat</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="text_completion">Text Completion</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="image">Image Generation</a>
-                    </li>
-                </ul>
+            <div> 
+                  <a class="icon-link icon-link-hover" href="chat_next">
+                    Recommend 
+                    <i class="bi-chat-dots"></i>
+                  </a>
+
+                  <a class="icon-link icon-link-hover" href="chat_next_mood">
+                    Recommend with mood 
+                    <i class="bi-chat-dots"></i>
+                  </a>
+
+                  <a class="icon-link icon-link-hover" href="image">
+                    Image Generation
+                    <i class="bi-card-image"></i>
+                  </a>
+
+                  <a class="icon-link icon-link-hover" href="chat">
+                    Recommend (legacy)
+                    <i class="bi-chat-dots"></i>
+                  </a>
             </div>
         </header>
         <div class="main">
-            <div class="item" style="display: flex; justify-content: space-between">
+            <div class="item" style="display: flex; justify-content: space-between; margin-bottom: 2.5em">
                 <h2>
                     <span class="title">Chat</span>
                     <span class="txt-chat-model">(Model: gpt-3.5-turbo)</span></h2> 
-                <div>
+                <div style="display: none;">
                     Temperature: 
-                    <input type="number" min="0" max="2" step="0.2" class="small-txt" id="temperature" value="0.5" />
+                    <input type="number" min="0" max="2" step="0.2" class="small-txt" id="temperature" value="0.2" />
                 </div>
             </div>
             <div class="item">
-                <!-- Choose style: 
-                <div class="btn-group btn-group-sm" role="group" aria-label="Basic radio toggle button group">
-                    <input type="radio" class="btn-check" name="radio-chat-style" id="radio-precise" autocomplete="off" checked value="0.2">
-                    <label class="btn btn-outline-secondary" for="radio-precise">
-                        <span class="sm-txt">More</span><br>Precise
-                    </label>
-                  
-                    <input type="radio" class="btn-check" name="radio-chat-style" id="radio-balanced" autocomplete="off" value="1">
-                    <label class="btn btn-outline-secondary" for="radio-balanced">
-                        <span class="sm-txt">More</span>
-                        <br>Balanced
-                    </label>
-                  
-                    <input type="radio" class="btn-check" name="radio-chat-style" id="radio-creative" autocomplete="off" value="1.5">
-                    <label class="btn btn-outline-secondary" for="radio-creative">
-                        <span class="sm-txt">More</span>
-                        <br>Creative
-                    </label>
-
-                    <input type="radio" class="btn-check" name="radio-chat-style" id="radio-custom" autocomplete="off">
-                    <label class="btn btn-outline-dark" for="radio-custom">
-                        <span class="sm-txt">Or use</span>
-                        <br>Custom
-                    </label>
-                </div>                 -->
-                
-                <br>
-                <span class="prepare-txt" id="prepare-txt">
+                <p class="prepare-txt" id="prepare-txt">
                     Hi there, I'm a helpful assistant that specializes in recommending TV series to viewers
-                </span>
-                <br><br>
+                </p>
                 <div class="txt-input-wrapper">
-                    <textarea class="txt-area" id="txt" maxlength="1600" placeholder="Ask me anything..." rows="5"></textarea>
+                    <textarea class="txt-area" id="txt" maxlength="1600" placeholder="Ask me anything..." rows="8"></textarea>
                     <i class="bi bi-send" id="btn"></i>
                     <div id="spinner" class="spinner-border" style="width: 1.5em; height: 1.5em; color:rgb(102, 102, 102);" role="status">
                         <span class="visually-hidden">Loading...</span>
