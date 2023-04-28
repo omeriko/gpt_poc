@@ -10,6 +10,19 @@ window.addEventListener('DOMContentLoaded', () => {
     let chat_container_inner = document.querySelector("#chat-container-inner");
     let response_error = document.querySelector("#response-error");
     let response_usage = document.querySelector("#response-usage");
+
+    const fetchHeader = async () => {
+        try {
+            const res = await fetch("header");
+            const template = await res.text();
+            document.querySelector(".header").innerHTML = template;
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    fetchHeader();
+
     const prepare_message = "a helpful assistant that specializes in recommending TV series to viewers."
     let chat_history = [{ 
         "role": "system", 

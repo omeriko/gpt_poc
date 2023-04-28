@@ -10,14 +10,11 @@ window.addEventListener('DOMContentLoaded', () => {
     let response_usage = document.querySelector("#response-usage");
     let img_response = document.querySelector("#img-response");
 
-    const headerElement = document.querySelector("header");
-    
     const fetchHeader = async () => {
         try {
             const res = await fetch("header");
             const template = await res.text();
-
-            headerElement.innerHTML = template;
+            document.querySelector(".header").innerHTML = template;
         } catch (err) {
             console.log(err);
         }
