@@ -88,7 +88,7 @@ window.addEventListener('DOMContentLoaded', () => {
             
             $.ajax({
                 type: "POST",
-                url: `http://${domain}:8000/post_chat_completion_next`,
+                url: `http://${domain}:8000/post_chat_completion3`,
                 dataType: "json",
                 data: { 
                     few_user_series: arr_user_series, 

@@ -199,7 +199,7 @@ app.post('/post_chat_completion', [cors(corsOptionsDelegate)], async (req, res) 
    
 });
 
-app.post('/post_chat_completion_next', [cors(corsOptionsDelegate)], async (req, res) => {
+app.post('/post_chat_completion3', [cors(corsOptionsDelegate)], async (req, res) => {
     let json_res = {};
     const temperature = Number(req.body.temperature);
     const few_series = join_array_with_comma(req.body.few_user_series);
@@ -298,7 +298,105 @@ app.post('/post_chat_completion_next', [cors(corsOptionsDelegate)], async (req, 
    
 });
 
-app.post('/post_image_generation', [cors(corsOptionsDelegate)], async (req, res) => {
+app.post('/post_chat_completion2', [cors(corsOptionsDelegate)], async (req, res) => {
+    let json_res = {};
+    const temperature = Number(req.body.temperature);
+    const few_series = join_array_with_comma(req.body.few_user_series);    
+    
+    const chat_history = [{ 
+            "role": "system", 
+            "content": "You are a helpful assistant, that specializes in recommending TV series to TV viewers, based on previous series they have watched."
+        }, 
+        { 
+            "role": "user", 
+            "content": `I've seen and enjoyed the following TV series: ${few_series}.
+            1. Please recommend me four OTHER tv series that I might also like AND might suit my mood.
+            2. For each series recommendation do not specify the series plot.
+            3. For each series recommendation explain its reason.
+            4. Recommend series ONLY from the following list: `
+        }
+    ];
+
+    chat_history[1].content = chat_history[1].content.replaceAll("\n", "");
+
+    try {
+        if(process.env.NODE_ENV !== "ci") {
+            const full_path_txt = path.join(__dirname, '../', 'series_smaller2.txt');
+            const all_series = await fsPromises.readFile(full_path_txt, "utf8");
+            
+            chat_history[1].content += " " + all_series;
+            const hrstart = process.hrtime();
+            
+            const completion = await openai.createChatCompletion({
+                model: "gpt-3.5-turbo",
+                temperature: temperature,
+                messages: chat_history
+            });
+            
+            const hrend = process.hrtime(hrstart);
+            const processing = format_processing_time(hrend); 
+            json_res = make_response2(completion.data, processing);
+
+            res.status(200).json(json_res);
+        } else {
+            setTimeout(() => { 
+                json_res = make_fake_response();
+                res.status(200).json(json_res);
+            }, 2000);
+        }
+    } catch(err) {
+            // Consider adjusting the error handling logic for your use case
+        if (err.response) {
+            console.error(err.response.status, err.response.data);
+            res.status(err.response.status).json(err.response.data);
+        } else {
+            console.error(`Error with OpenAI API request: ${err.message}`);
+            res.status(500).json({ error: { message: 'An error occurred during your request.', }});
+        }
+    }
+
+    function make_response2 (payload, processing) {
+        return {
+            finish_reason: payload.choices[0].finish_reason,
+            text:  payload.choices[0].message.content,
+            usage: payload.usage,
+            env: "prod/dev",
+            duration: processing
+        };
+    }
+
+    function make_fake_response () {
+        return {
+            finish_reason: "stop",
+            text:  "WW2 in color, The Handmaid's Tale",
+            usage: { prompt_tokens: 100, completion_tokens: 15, total_tokens: 115 },
+            env: "ci",
+            duration: "0.1 Seconds"
+        };
+    }
+
+    function format_processing_time(hrend){
+        const measurement = "Seconds";
+        let secs = hrend[0];
+        let remainder_milli_secs = Math.floor(hrend[1]/1000000);
+        let result = Number(`${secs}.${remainder_milli_secs}`);
+        return `${result} ${measurement}`;
+    }
+
+    function join_array_with_comma(array) {
+        let result = "";
+        array.forEach((item, index, arr) => {
+            if(index === 0) result += item;
+            else if(index === arr.length-1) result += ` and ${item}`;
+            else result += `, ${item}`;
+        });
+
+        return result;
+    }
+   
+});
+
+app.post('/post_image_generation3', [cors(corsOptionsDelegate)], async (req, res) => {
     
     const prompt = req.body.prompt;
 
