@@ -18,6 +18,7 @@ window.addEventListener('DOMContentLoaded', () => {
             document.querySelector(".header").innerHTML = template;
         } catch (err) {
             console.log(err);
+            console.log(err);
         }
     };
 
