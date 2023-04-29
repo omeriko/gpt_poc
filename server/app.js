@@ -12,7 +12,7 @@ console.log(process.env.NODE_ENV);
 const configuration = new Configuration({
     apiKey: keys.OPEN_AI_TOKEN
   });
-
+//no comment
 const openai = new OpenAIApi(configuration);
 
 const app = express();
@@ -199,20 +199,19 @@ app.post('/post_chat_completion', [cors(corsOptionsDelegate)], async (req, res) 
    
 });
 
-app.post('/post_chat_completion3', [cors(corsOptionsDelegate)], async (req, res) => {
+app.post('/post_chat_completion2', [cors(corsOptionsDelegate)], async (req, res) => {
     let json_res = {};
     const temperature = Number(req.body.temperature);
-    const few_series = join_array_with_comma(req.body.few_user_series);
-    const few_moods = join_array_with_comma(req.body.user_moods);
+    const few_series = join_array_with_comma(req.body.few_user_series);    
     
     const chat_history = [{ 
             "role": "system", 
-            "content": "You are a helpful assistant that specializes in recommending TV series to viewers."
+            "content": "You are a helpful assistant, that specializes in recommending TV series to TV viewers, based on previous series they have watched."
         }, 
         { 
             "role": "user", 
-            "content": `I've seen and enjoyed the following TV series: ${few_series}. Currently i'm feeling: ${few_moods}.
-            1. Please recommend me two OTHER tv series that I might also like AND might suit my mood.
+            "content": `I've seen and enjoyed the following TV series: ${few_series}.
+            1. Please recommend me four OTHER tv series that I might also like AND might suit my mood.
             2. For each series recommendation do not specify the series plot.
             3. For each series recommendation explain its reason.
             4. Recommend series ONLY from the following list: `
@@ -298,19 +297,20 @@ app.post('/post_chat_completion3', [cors(corsOptionsDelegate)], async (req, res)
    
 });
 
-app.post('/post_chat_completion2', [cors(corsOptionsDelegate)], async (req, res) => {
+app.post('/post_chat_completion3', [cors(corsOptionsDelegate)], async (req, res) => {
     let json_res = {};
     const temperature = Number(req.body.temperature);
-    const few_series = join_array_with_comma(req.body.few_user_series);    
+    const few_series = join_array_with_comma(req.body.few_user_series);
+    const few_moods = join_array_with_comma(req.body.user_moods);
     
     const chat_history = [{ 
             "role": "system", 
-            "content": "You are a helpful assistant, that specializes in recommending TV series to TV viewers, based on previous series they have watched."
+            "content": "You are a helpful assistant that specializes in recommending TV series to viewers."
         }, 
         { 
             "role": "user", 
-            "content": `I've seen and enjoyed the following TV series: ${few_series}.
-            1. Please recommend me four OTHER tv series that I might also like AND might suit my mood.
+            "content": `I've seen and enjoyed the following TV series: ${few_series}. Currently i'm feeling: ${few_moods}.
+            1. Please recommend me two OTHER tv series that I might also like AND might suit my mood.
             2. For each series recommendation do not specify the series plot.
             3. For each series recommendation explain its reason.
             4. Recommend series ONLY from the following list: `
