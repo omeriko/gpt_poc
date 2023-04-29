@@ -4,11 +4,12 @@ node_js:
 dist: trusty
 env: 
   - NODE_ENV=ci PORT=8000
-  cache:
-    directories:
-      -node_modules
+cache:
+  directories:
+    - node_modules
 install:
-  -npm install
+  - npm install
 script:
   - nohup npm run start &
   - sleep 3
+  - npm run test_ci
