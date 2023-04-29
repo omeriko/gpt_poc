@@ -1,0 +1,15 @@
+language: node_js
+node_js: 
+  - "17"
+dist: trusty
+env: 
+  - NODE_ENV=ci PORT=8000
+chache:
+  directories: 
+    - node_modules
+install:
+  - npm install
+script: 
+  - nohup npm run start_ci &
+  - sleep 3
+  - npm run test_ci
