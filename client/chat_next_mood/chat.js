@@ -3,9 +3,8 @@ window.addEventListener('DOMContentLoaded', () => {
     const minimun_moods = 1;
     const domain = "localhost"; //"192.168.1.20";
     let btn = document.querySelector("#btn-next");
-    let validator_series = document.querySelector("#validator-series");
-    let validator_moods = document.querySelector("#validator-moods");
-
+    let validator = document.querySelector("#validator");
+    
     let temperature = document.querySelector("#temperature");
     
     let spinner = document.querySelector("#spinner-next");
@@ -77,12 +76,12 @@ window.addEventListener('DOMContentLoaded', () => {
 
     const trigger_chat_completion = () => {
 
-        validator_series.style.display = validator_moods.style.display = "none";
+        validator.style.display = "none";
         const arr_user_series = pre_request_series_logic();
         const arr_user_moods = pre_request_moods_logic();
 
         //console.log(arr_user_series);
-        if(arr_user_series.length >= minimun_series && arr_user_moods.length >= minimun_moods) {
+        if(arr_user_series.length + arr_user_moods.length >= 0) {
             btn.setAttribute("disabled", "");
             spinner.style.display = "block";
             
@@ -121,14 +120,8 @@ window.addEventListener('DOMContentLoaded', () => {
                 console.log(err.responseText);
             });
 
-        } else {
-            if(arr_user_series.length < minimun_series) {
-                validator_series.style.display = "block";
-            }
-
-            if( arr_user_moods.length < minimun_moods) {
-                validator_moods.style.display = "block";
-            }
+        } else {            
+            validator.style.display = "block";
         }
     };
     

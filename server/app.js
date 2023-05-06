@@ -300,17 +300,20 @@ app.post('/post_chat_completion2', [cors(corsOptionsDelegate)], async (req, res)
 app.post('/post_chat_completion3', [cors(corsOptionsDelegate)], async (req, res) => {
     let json_res = {};
     const temperature = Number(req.body.temperature);
-    const few_series = join_array_with_comma(req.body.few_user_series);
-    const few_moods = join_array_with_comma(req.body.user_moods);
+    
+    const series_part = get_series_part(req.body.few_user_series);
+    const moods_part = get_moods_part(req.body.user_moods);
+    const content = get_content(req.body.few_user_series, req.body.user_moods); 
+    const item_1 = get_item_1(3, req.body.few_user_series, req.body.user_moods);   
     
     const chat_history = [{ 
             "role": "system", 
-            "content": "You are a helpful assistant that specializes in recommending TV series to viewers."
+            "content": content
         }, 
         { 
             "role": "user", 
-            "content": `I've seen and enjoyed the following TV series: ${few_series}. Currently i'm feeling: ${few_moods}.
-            1. Please recommend me two OTHER tv series that I might also like AND might suit my mood.
+            "content": `${series_part}. ${moods_part}.
+            1. ${item_1}
             2. For each series recommendation do not specify the series plot.
             3. For each series recommendation explain its reason.
             4. Recommend series ONLY from the following list: `
@@ -353,6 +356,41 @@ app.post('/post_chat_completion3', [cors(corsOptionsDelegate)], async (req, res)
             console.error(`Error with OpenAI API request: ${err.message}`);
             res.status(500).json({ error: { message: 'An error occurred during your request.', }});
         }
+    }
+
+    function get_item_1(count, arr_series, arr_moods) {
+        const counts = ["one", "two", "three", "four", "five", "six"];
+        let result = ""
+        if(arr_series !== undefined && arr_moods !== undefined) {
+            result = `Please recommend me ${count-1} OTHER tv series that I might also like based on the previous series i've watched AND based on my current mood.`;
+        } else if(arr_series !== undefined) {
+            result = `Please recommend me ${count-1} OTHER tv series that I might also like based on the previous series i've watched.`;
+        } else if(arr_moods !== undefined) {
+            result = `Please recommend me ${count-1} OTHER tv series that I might also like based on my current mood.`;
+        }
+
+        return result;
+    }
+
+    function get_content(arr_series, arr_moods) {
+        let result = ""
+        if(arr_series !== undefined && arr_moods !== undefined) {
+            result = "You are a helpful assistant that specializes in recommending TV series to viewers, based on previous series they have watched and based on their current mood";
+        } else if(arr_series !== undefined) {
+            result = "You are a helpful assistant that specializes in recommending TV series to viewers, based on previous series they have watched.";
+        } else if(arr_moods !== undefined) {
+            result = "You are a helpful assistant that specializes in recommending TV series to viewers, based on their current mood";
+        }
+
+        return result;
+    }
+
+    function get_series_part(arr_series) {
+        return arr_series !== undefined ? `I've seen and enjoyed the following TV series: ${join_array_with_comma(arr_series)}.` : "";
+    }
+
+    function get_moods_part(arr_moods) {
+        return arr_moods !== undefined ? `Currently i'm feeling:: ${join_array_with_comma(arr_moods)}.` : "";
     }
 
     function make_response2 (payload, processing) {
