@@ -3,6 +3,8 @@ window.addEventListener('DOMContentLoaded', () => {
     const minimun_moods = 1;
     const domain = "localhost"; //"192.168.1.20";
     let btn = document.querySelector("#btn-next");
+    let btn_clear = document.querySelector("#btn-clear");
+    
     let validator = document.querySelector("#validator");
     
     let temperature = document.querySelector("#temperature");
@@ -81,7 +83,7 @@ window.addEventListener('DOMContentLoaded', () => {
         const arr_user_moods = pre_request_moods_logic();
 
         //console.log(arr_user_series);
-        if(arr_user_series.length + arr_user_moods.length >= 0) {
+        if(arr_user_series.length + arr_user_moods.length > 0) {
             btn.setAttribute("disabled", "");
             spinner.style.display = "block";
             
@@ -95,6 +97,7 @@ window.addEventListener('DOMContentLoaded', () => {
                     temperature: temperature.value.trim()
                 }
             }).done( data => {
+                btn_clear.style.display = "block";
                 btn.removeAttribute("disabled");
                 spinner.style.display = "none";
                 
@@ -124,14 +127,28 @@ window.addEventListener('DOMContentLoaded', () => {
             validator.style.display = "block";
         }
     };
-    
+   
+    btn_clear.addEventListener("click", e => {
+        clear_prev_request();
+        e.target.style.display = "none";
+    }, false);
+
     btn.addEventListener("click", e => {
         trigger_chat_completion();
     }, false);
+    
+    const clear_prev_request = () => {
+        response_usage.style.display = "none";
+        response_usage.innerHTML = "";
+        chat_container_inner.innerHTML = "";
+        [...document.querySelectorAll(".series .form-check-inline")].forEach(item => item.querySelector("input").checked = false);
+            
+        [...document.querySelectorAll(".moods  .form-check-inline")].forEach(item => item.querySelector("input").checked = false);
+    };
 
     const pre_request_series_logic = () => {
         let result = [];
-        [...document.querySelectorAll(".series > .form-check-inline")].forEach(item => {
+        [...document.querySelectorAll(".series .form-check-inline")].forEach(item => {
             if(item.querySelector("input").checked === true) {
                 result.push(item.querySelector("label").innerText);
             }
@@ -142,7 +159,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     const pre_request_moods_logic = () => {
         let result = [];
-        [...document.querySelectorAll(".moods > .form-check-inline")].forEach(item => {
+        [...document.querySelectorAll(".moods .form-check-inline")].forEach(item => {
             if(item.querySelector("input").checked === true) {
                 result.push(item.querySelector("label").innerText);
             }

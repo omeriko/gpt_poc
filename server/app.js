@@ -312,7 +312,7 @@ app.post('/post_chat_completion3', [cors(corsOptionsDelegate)], async (req, res)
         }, 
         { 
             "role": "user", 
-            "content": `${series_part}. ${moods_part}.
+            "content": `${series_part} ${moods_part}
             1. ${item_1}
             2. For each series recommendation do not specify the series plot.
             3. For each series recommendation explain its reason.
@@ -358,15 +358,16 @@ app.post('/post_chat_completion3', [cors(corsOptionsDelegate)], async (req, res)
         }
     }
 
-    function get_item_1(count, arr_series, arr_moods) {
-        const counts = ["one", "two", "three", "four", "five", "six"];
+    function get_item_1(arg_count, arr_series, arr_moods) {
+        const counts_helper = ["one", "two", "three", "four", "five", "six"];
+        const count = counts_helper[arg_count-1];
         let result = ""
         if(arr_series !== undefined && arr_moods !== undefined) {
-            result = `Please recommend me ${count-1} OTHER tv series that I might also like based on the previous series i've watched AND based on my current mood.`;
+            result = `Please recommend me ${count} OTHER tv series that I might also like based on the previous series i've watched AND based on my current mood.`;
         } else if(arr_series !== undefined) {
-            result = `Please recommend me ${count-1} OTHER tv series that I might also like based on the previous series i've watched.`;
+            result = `Please recommend me ${count} OTHER tv series that I might also like based on the previous series i've watched.`;
         } else if(arr_moods !== undefined) {
-            result = `Please recommend me ${count-1} OTHER tv series that I might also like based on my current mood.`;
+            result = `Please recommend me ${count} OTHER tv series that I might also like based on my current mood.`;
         }
 
         return result;
@@ -390,7 +391,7 @@ app.post('/post_chat_completion3', [cors(corsOptionsDelegate)], async (req, res)
     }
 
     function get_moods_part(arr_moods) {
-        return arr_moods !== undefined ? `Currently i'm feeling:: ${join_array_with_comma(arr_moods)}.` : "";
+        return arr_moods !== undefined ? `Currently i'm feeling: ${join_array_with_comma(arr_moods)}.` : "";
     }
 
     function make_response2 (payload, processing) {
