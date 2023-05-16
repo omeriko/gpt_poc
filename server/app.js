@@ -304,7 +304,7 @@ app.post('/post_chat_completion3', [cors(corsOptionsDelegate)], async (req, res)
     const series_part = get_series_part(req.body.few_user_series);
     const moods_part = get_moods_part(req.body.user_moods);
     const content = get_content(req.body.few_user_series, req.body.user_moods); 
-    const item_1 = get_item_1(3, req.body.few_user_series, req.body.user_moods);   
+    const item_1 = get_item_1(Number(req.body.count), req.body.few_user_series, req.body.user_moods);   
     
     const chat_history = [{ 
             "role": "system", 

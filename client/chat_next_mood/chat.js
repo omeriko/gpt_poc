@@ -37,8 +37,6 @@ window.addEventListener('DOMContentLoaded', () => {
     };
 
     const render_good_response = (div, p_txt, env, duration, arr_user_series) => {
-        let speed = p_txt <= 220 ? 70 : 10; /* The speed/duration of the effect in milliseconds */
-        let i = 0;
         
         div.innerHTML = "<span class='bold' style='color:darkgreen'>GPT-3.5 answer: </span>"; 
         if(env !== "ci") {            
@@ -49,22 +47,10 @@ window.addEventListener('DOMContentLoaded', () => {
             });
 
             div.innerHTML += p_txt;
+            div.innerHTML += `<br><span style="color:gray; font-size: 0.9em">(duration: ${duration})<span/>`;
         } else {
             div.innerHTML += p_txt;
         }
-
-        div.innerHTML += `<br><span style="color:gray; font-size: 0.9em">(duration: ${duration})<span/>`;
-        
-        function type_writer (){
-            if (i < p_txt.length) {
-                div.innerHTML += p_txt.charAt(i);                
-                chat_container.scrollTo(0, chat_container_inner.getBoundingClientRect().height);
-                i++;
-                setTimeout(type_writer, speed);
-            } else {
-                div.innerHTML += `<br><span style="color:gray; font-size: 0.9em">(duration: ${duration})<span/>`;
-            }
-        } 
 
         function insert_line_breaks(txt) {
             const max_length = 10;
@@ -81,7 +67,7 @@ window.addEventListener('DOMContentLoaded', () => {
         validator.style.display = "none";
         const arr_user_series = pre_request_series_logic();
         const arr_user_moods = pre_request_moods_logic();
-
+        const count = Number(document.querySelector("#txt-count").value);
         //console.log(arr_user_series);
         if(arr_user_series.length + arr_user_moods.length > 0) {
             btn.setAttribute("disabled", "");
@@ -94,7 +80,8 @@ window.addEventListener('DOMContentLoaded', () => {
                 data: { 
                     few_user_series: arr_user_series, 
                     user_moods: arr_user_moods,                  
-                    temperature: temperature.value.trim()
+                    temperature: temperature.value.trim(),
+                    count: count
                 }
             }).done( data => {
                 btn_clear.style.display = "block";
