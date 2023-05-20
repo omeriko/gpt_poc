@@ -67,6 +67,7 @@ window.addEventListener('DOMContentLoaded', () => {
         validator.style.display = "none";
         const arr_user_series = pre_request_series_logic();
         const arr_user_moods = pre_request_moods_logic();
+        const language = document.querySelectorAll("input[type='radio'][name='inlineRadioOptions']:checked")[0].value;
         const count = Number(document.querySelector("#txt-count").value);
         //console.log(arr_user_series);
         if(arr_user_series.length + arr_user_moods.length > 0) {
@@ -81,7 +82,8 @@ window.addEventListener('DOMContentLoaded', () => {
                     few_user_series: arr_user_series, 
                     user_moods: arr_user_moods,                  
                     temperature: temperature.value.trim(),
-                    count: count
+                    count: count,
+                    lang: language
                 }
             }).done( data => {
                 btn_clear.style.display = "block";
@@ -94,7 +96,11 @@ window.addEventListener('DOMContentLoaded', () => {
                     assistant_div.classList.add("chat-item-assistant");
 
                     chat_container_inner.appendChild(assistant_div); 
-                    
+                    if(language === "Hebrew") {
+                        assistant_div.style.direction = "rtl";
+                        assistant_div.style.textAlign = "right";
+                    }
+
                     render_good_response(assistant_div, data.text, data.env, data.duration, arr_user_series);
                     chat_container.scrollTo(0, chat_container_inner.getBoundingClientRect().height);
                     response_usage.style.display = "block";

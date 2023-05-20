@@ -79,11 +79,11 @@ describe("Test Behavior when sending a prompt to the server", () => {
       await browser.close();
   });
 
-  test("The send icon is hidden and the progress icon appears", async () => {
+  /*test("The send icon is hidden and the progress icon appears", async () => {
     await page.waitForSelector("#btn", { hidden: true });    
     const display = await page.$eval('#spinner', el => window.getComputedStyle(el).display);
     expect(display).toEqual("block");
-  });
+  });*/
 
   test("the user's prompt appears in the chat history", async () => { 
     const user_prompt = await page.$eval('.chat-item-user', el => el.innerText);

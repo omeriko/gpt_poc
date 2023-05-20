@@ -305,7 +305,8 @@ app.post('/post_chat_completion3', [cors(corsOptionsDelegate)], async (req, res)
     const moods_part = get_moods_part(req.body.user_moods);
     const content = get_content(req.body.few_user_series, req.body.user_moods); 
     const item_1 = get_item_1(Number(req.body.count), req.body.few_user_series, req.body.user_moods);   
-    
+    const language = req.body.lang === "Hebrew" ? " in the Hebrew language" : "";
+
     const chat_history = [{ 
             "role": "system", 
             "content": content
@@ -315,7 +316,7 @@ app.post('/post_chat_completion3', [cors(corsOptionsDelegate)], async (req, res)
             "content": `${series_part} ${moods_part}
             1. ${item_1}
             2. For each series recommendation do not specify the series plot.
-            3. For each series recommendation explain its reason.
+            3. For each series recommendation explain its reason${language}.
             4. Recommend series ONLY from the following list: `
         }
     ];

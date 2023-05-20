@@ -7,7 +7,7 @@ class CustomPage {
   
   static async build() {   
     const browser_options = process.env.NODE_ENV !== "ci" ? { 
-      slowMo: 500,
+      slowMo: 100,
       headless: false
     } : { 
       headless: true,

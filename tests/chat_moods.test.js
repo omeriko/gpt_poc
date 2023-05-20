@@ -9,9 +9,9 @@ describe("Test moods/chat.html page", () => {
       await page.goto('http://localhost:8000/chat_next_mood');
     });
     
-    // afterAll(async () => {
-    //     await browser.close();
-    // });
+    afterAll(async () => {
+        await browser.close();
+    });
 
     test("when the page loads the validator is hidden.", async () => {
       const display = await page.$eval('#validator', el => window.getComputedStyle(el).display);
@@ -50,11 +50,11 @@ describe("Test moods/chat.html page", () => {
        expect(display).toEqual("block");
     }); 
     
-    test("Click clear button, validate UI", async () => {
+    test("Click clear button, all series and moods checkboxes are cleared", async () => {
       await page.click('#btn-clear');
 
-      let is_checked = await page.evaluate(() => {
-        const arr = [...document.querySelectorAll(".series .form-check-inline")];
+      let is_series_checked = await page.evaluate(() => {
+        const arr = [...document.querySelectorAll(".series .form-check-inline > input")];
         let is_checked = false;  
         for(let i = 0 ; i < arr.length; i++) {
           is_checked = arr[i].checked;
@@ -65,7 +65,29 @@ describe("Test moods/chat.html page", () => {
         return is_checked;
         
       });
-      console.log(is_checked);
+      expect(is_series_checked).toEqual(false);
+
+      let is_moods_checked = await page.evaluate(() => {
+        const arr = [...document.querySelectorAll(".moods .form-check-inline > input")];
+        let is_checked = false;  
+        for(let i = 0 ; i < arr.length; i++) {
+          is_checked = arr[i].checked;
+          if(is_checked === true) {
+            break;
+          } 
+        }
+        return is_checked;
+        
+      });
+      expect(is_moods_checked).toEqual(false);
+      
+      let display = await page.$eval('#response-usage', el => window.getComputedStyle(el).display);
+      expect(display).toEqual("none");
+
+      await page.waitForSelector(".chat-item-assistant", { hidden: true });
+      
+      display = await page.$eval('#btn-clear', el => window.getComputedStyle(el).display);
+      expect(display).toEqual("none");
     });
 });
 
