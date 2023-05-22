@@ -1,7 +1,7 @@
 language: node_js
 node_js: 
   - "17"
-dist: trusty
+dist: focal
 env: 
   - NODE_ENV=ci PORT=8000
 chache:
