@@ -10,7 +10,7 @@ class CustomPage {
       slowMo: 100,
       headless: false
     } : { 
-      headless: true,
+      headless: "new",
       args: ["--no-sandbox"]
     }; 
 
