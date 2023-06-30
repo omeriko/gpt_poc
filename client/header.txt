@@ -13,4 +13,9 @@
         Image Generation
         <i class="bi-card-image"></i>
     </a>
+
+    <a class="icon-link icon-link-hover" href="qrcode">
+        QR Code
+        <i class="bi-card-image"></i>
+    </a>
 </div>

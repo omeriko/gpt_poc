@@ -16,7 +16,8 @@
     "csv": "^6.2.8",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
-    "openai": "^3.1.0"
+    "openai": "^3.1.0",
+    "qrcode": "^1.5.3"
   },
   "devDependencies": {
     "jest": "^29.5.0",

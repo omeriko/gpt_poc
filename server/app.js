@@ -7,6 +7,8 @@ const { parse } = require("csv-parse");
 const path = require("path");
 const fsPromises = require("fs/promises");
 const keys = require("./config/keys");
+var QRCode = require('qrcode')
+
 
 console.log(process.env.NODE_ENV);
 const configuration = new Configuration({
@@ -48,11 +50,27 @@ app.use('/text_completion.js', express.static(path.join(__dirname, '../', 'clien
 app.use('/image', express.static(path.join(__dirname, '../', 'client', 'image', 'image_generation.html' )));
 app.use('/image_generation.js', express.static(path.join(__dirname, '../', 'client', 'image', 'image_generation.js' )));
 
+app.use('/qrcode', express.static(path.join(__dirname, '../', 'client', 'qrcode', 'index.html' )));
+app.use('/qrcode.js', express.static(path.join(__dirname, '../', 'client', 'qrcode', 'index.js' )));
+
 app.use('/header', express.static(path.join(__dirname, '../', 'client', 'header.txt' )));
 
 app.get('/ping', [cors(corsOptionsDelegate)], (req, res) => {
     const text = "ok-poc";      
     return res.status(200).send(text);
+});
+
+app.get('/qr_code', [cors(corsOptionsDelegate)], async (req, res) => {
+    
+    const text = "https://www.youtube.com/watch?v=7bvuBr8btSM&t=2s";
+    const options = { errorCorrectionLevel: 'M', version: 5, mode: 'alphanumeric' };
+
+    try {
+        return res.status(200).send(await QRCode.toDataURL(text, options));
+    } catch (err) {
+        return res.status(500).send("err");
+    }  
+    
 });
 
 app.get('/csv-to-text', [cors(corsOptionsDelegate)], async (req, res) => {    
